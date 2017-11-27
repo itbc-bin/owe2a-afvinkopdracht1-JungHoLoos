@@ -8,7 +8,9 @@ def main():
     try:
         bestand = "demotest.txt"
         headers, seqs = lees_inhoud(bestand)
+       
         #extra_error()
+        
 
         zoekwoord = input("Geef een zoekwoord op: ")
         for i in range(len(headers)):
@@ -35,10 +37,13 @@ def main():
 
 def lees_inhoud(bestands_naam):
      bestand = open(bestands_naam)
+     lees = bestand.readlines()
+     if lees[0][0] != '>':
+         raise IndexError
      headers = []
      seqs = []
      seq = ""
-     for line in bestand:
+     for line in lees:
          line=line.strip()
          if ">" in line:
              if seq != "":
@@ -48,8 +53,6 @@ def lees_inhoud(bestands_naam):
          else:
              seq += line.strip()
      seqs.append(seq)
-     if len(line) != len(seq):
-         raise IndexError
 
      return headers, seqs
     
@@ -74,10 +77,7 @@ def knipt(alpaca_seq):
         if seq in alpaca_seq:
             print(naam, "knipt in sequentie")
     
-def extra_error():
-    headers, seqs = lees_inhoud(bestand)
-    bestand = "demotest.txt"
-    
+
     
             
     
