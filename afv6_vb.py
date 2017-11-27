@@ -1,4 +1,4 @@
-# Naam:
+# Naam: Jung Ho
 # Datum:
 # Versie:
 
@@ -8,20 +8,31 @@ def main():
     try:
         bestand = "demotest.txt"
         headers, seqs = lees_inhoud(bestand)
+        #extra_error()
+
+        zoekwoord = input("Geef een zoekwoord op: ")
+        for i in range(len(headers)):
+            if zoekwoord in headers[i]:
+                print("Header:",headers[i])
+                check_is_dna = is_dna(seqs[i])
+                print (check_is_dna)
+                if not isinstance(check_is_dna, bool):
+                    raise NameError
+                if check_is_dna:
+                    print("Sequentie is DNA")
+                    knipt(seqs[i])
+                else:
+                    print("Sequentie is geen DNA. Er is iets fout gegaan.")
     except FileNotFoundError:
         print ("No file found. Please insert new file")
+    except NameError:
+        print ("is_dna does not return a boolean")
+    except ValueError:
+        print ("knipt does not receive expected input")
+    except IndexError:
+        print ("dit is geen fasta")
     
-    zoekwoord = input("Geef een zoekwoord op: ")
-    for i in range(len(headers)):
-        if zoekwoord in headers[i]:
-            print("Header:",headers[i])
-            check_is_dna = is_dna(seqs[i])
-            if check_is_dna:
-                print("Sequentie is DNA")
-                knipt(seqs[i])
-            else:
-                print("Sequentie is geen DNA. Er is iets fout gegaan.")
-    
+
 def lees_inhoud(bestands_naam):
      bestand = open(bestands_naam)
      headers = []
@@ -37,8 +48,11 @@ def lees_inhoud(bestands_naam):
          else:
              seq += line.strip()
      seqs.append(seq)
-     return headers, seqs
+     if len(line) != len(seq):
+         raise IndexError
 
+     return headers, seqs
+    
     
 def is_dna(seq):
     dna = False
@@ -48,7 +62,7 @@ def is_dna(seq):
     g = seq.count("G")
     total = a + t + c + g
     if total == len(seq):
-        dna = True
+        dna = True   
     return dna
 
 # bij deze functie kan je een deel van de code die je de afgelopen 2 afvinkopdrachten geschreven hebt herbruiken
@@ -60,7 +74,14 @@ def knipt(alpaca_seq):
         if seq in alpaca_seq:
             print(naam, "knipt in sequentie")
     
+def extra_error():
+    headers, seqs = lees_inhoud(bestand)
+    bestand = "demotest.txt"
     
+    
+            
+    
+            
 
 
 main()
